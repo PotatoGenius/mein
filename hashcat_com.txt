@@ -1,0 +1,180 @@
+cd hashcat
+
+*******************************************
+Attack modes
+
+./hashcat -a 0 -m 0 example0.hash example.dict -O -w 4  //regular dictionary attack with optimized kernel
+
+./hashcat -a 0 -m 12700 hash.txt dict -r rules/combinator.rule -O -w 4 -o 0ut.txt //rule attack
+
+./hashcat -a 1 -m 400 hash.txt dict dict2.txt -O -w 4 -o 0ut.txt //two dictionaries attack
+
+./hashcat -a 3 -m 1710 hash.txt ?a?a -O -w 4 -o 0ut.txt //bruteforce attack
+
+./hashcat -a 6 -m 1710 hash.txt dict ?a?a -O -w 4 -o 0ut.txt //dictionary plus bruteforce attack at the end of the word
+
+./hashcat -a 7 -m 1710 hash.txt ?a?a dict -O -w 4 -o 0ut.txt //dictionary plus bruteforce attack at the start of the word
+ 
+./hashcat -a 6 -m 26600 hash.txt dict 1997 -O -w 4 -o out.txt //dictionary plus number at the end of the word
+
+./hashcat -a 1 -m 26600 hash.txt dict.txt dict2.txt -k '$123' -O -w 4 -o 0mtx.txt //two dictionaries plus number appended to the end
+
+./hashcat -w 3 -a 1 -m 400 hash.txt dict dict2.txt -j "^@" -o 0escrow.txt //two dictionaries plus symbol appended to the end
+
+./hashcat -w 3 -a 1 -m 400 hash.txt dict dict2.txt -j "^5^1^2" -o out.txt       
+//above input gives this 0utput: 215nakayla, this basically works backwards. Also -j and k only append to start and end of first dictionary in mode -a 1
+
+./hashcat -a 6 -m 400 hash.txt dict ?a?a --speed-only -S -o 0ut.txt //to check speed
+
+MULTIRULE:
+$ cat 123.rule
+$1
+$2
+$3
+
+$ cat abc.rule
+$a
+$b
+$c
+
+Crypto Tags: Rather than using abstract strings, users heavily reuse terms like Bitcoin, Satoshi, Crypto, Ethereum, or Hodl mixed with a birth year or standard trailing symbols (e.g., Bitcoin2024!, Crypto123).Predictability Multipliers: Attackers prioritize these industry terms in customized brute-force dictionaries specifically designed to target cold storage software or local wallet extensions.
+Sequential numbers: 123456, 123456789.Keyboard patterns: qwerty, asdfgh.Predictable personal data: NameYear (e.g., David1990) or pet names.
+
+$ hashcat --std0ut -r 123.rule -r abc.rule wordlist
+hashcat1a
+hashcat2a
+hashcat3a
+hashcat1b
+hashcat2b
+hashcat3b
+hashcat1c
+hashcat2c
+hashcat3c
+
+
+******************************************************************************
+phpass (11092khs) - 400
+metamask (206khs) - 26600
+metamask short (?) - 26610
+wallet.dat (8303hs) - 11300
+electrum (salt-type 1-3) (1158mhs) - 16600
+electrum (salt-type 4) (526khs) - 21700
+electrum (salt-type 5) (522khs) - 21800
+sha 512 (1796mhs) - 1710 
+sha 256 (5416mhs) - 1410 
+sha512crypt (253khs) - 1800
+ssha 512 (1797mhs) - 1711
+sha1 (12613mh/s) - 100
+kerberos 5, etype 23 (886mhs) - 7500
+bitlocker (2229h/s very slow) - 22100  
+vbulletin < v3.8.5 (11645mhs) - 2611
+vbulletin >= v3.8.5 (8233mhs) - 2711
+bchain (53302khs) - 12700 
+bchain v2 (510khs) - 15200
+bchain 2nd pass (447khs) - 18800
+ntlm (68140mhs) - 1000
+md5 (39827mhs) - 0
+md5 (salt plaintext) - 20
+apache (14658khs) - 1600
+opencart (3076mhs) - 13900 
+msoffice2013 (16899hs) - 9600
+MS Office <= 2003 $3/$4, SHA1 + RC4 (895mhs) - 9800
+7-zip (601khs) - 11600
+winzip (4333khs) - 13600
+pkzip compressed(3462mhs) - 17200
+pkzip uncompressed(2476mhs) - 17210
+multibit classic .key md5 (1423mhs) - 22500
+wpa-pbkdf2-pmkid+eapol (621khs) - 22000
+wpa-pmk-pmkid+eapol (112mhs) - 22001
+
+
+
+
+
+===========================-penglab-======================================
+!{sys.executable} -m pip install py7zr
+
+
+!pip3 install termcolor
+
+# Install the py7zr library
+!pip install py7zr
+
+# Import the py7zr library
+import py7zr
+
+# Specify the path to the 7z file
+file_path = 'years.7z'
+
+# Specify the directory to extract the contents to
+extract_path = 'hashcat'
+
+# Open the 7z file in read mode
+with py7zr.SevenZipFile(file_path, mode='r') as archive:
+    # Extract all contents to the specified directory
+    archive.extractall(path=extract_path)
+
+print(f'Successfully extracted {file_path} to {extract_path}')
+
+
+
+
+termcolor to ansi
+
+# Setting up shells
+import os
+
+# ANSI escape codes for colors
+RED = "\033[91m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
+
+if ssh:
+    print("Setting up SSH...")
+    !pip install git+https://github.com/demotomohiro/remocolab.git
+    import remocolab
+    remocolab.setupSSHD()
+
+elif python_shell:
+    os.system("touch /tmp/cmd && touch /tmp/status")
+
+    template_cmd = "echo -n $(whoami)[$(hostname)[$(pwd) &> /tmp/status"
+    os.system("bash -c '{}'".format(template_cmd))
+    0utput = {"cmd": "", "status": ""}
+    with open('/tmp/cmd', 'r') as f:
+        0utput["cmd"] = f.read()
+    with open('/tmp/status', 'r') as f:
+        0utput["status"] = f.read()
+    prefixes = 0utput["status"].split("[")
+    path = prefixes[2].replace('\n', '')
+    prefix = f"{RED}{prefixes[0]}@{prefixes[1]}{RESET}:{CYAN}{path}{RESET}$ "
+    print("")
+
+    while 1:
+        print(prefix, end='')
+        cmd = input()
+        template_cmd = "cd {} && ".format(path) + "" + cmd + " &> /tmp/cmd ; echo $(whoami)[$(hostname)[$(pwd) &> /tmp/status"
+        os.system("bash -c '{}'".format(template_cmd))
+        0utput = {"cmd": "", "status": ""}
+        with open('/tmp/cmd', 'r') as f:
+            0utput["cmd"] = f.read()
+        with open('/tmp/status', 'r') as f:
+            0utput["status"] = f.read()
+        prefixes = 0utput["status"].split("[")
+        path = prefixes[2].replace('\n', '')
+        prefix = f"{RED}{prefixes[0]}@{prefixes[1]}{RESET}:{CYAN}{path}{RESET}$ "
+        print(0utput["cmd"])
+
+elif bash_shell:
+    !/bin/bash
+
+else:
+    print('\n🚨🚨🚨\n🎉 Your environment is ready !\nWant to run it from the code blocks ?')
+    print('Just use the code block below and start your commands by a "!" (make sure to uncomment them).')
+    print('▶️ When you\'re ready, hit the run button at the left of the code block !\n')
+    print('|\n|\n|\nV')
+
+
+***************************************************************************************
+linux tips:
+cat (to open a txt file)
